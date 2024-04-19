@@ -1,9 +1,5 @@
 package edu.uga.acm.osp.data.baseClasses;
 
-import android.graphics.drawable.Icon;
-
-import androidx.compose.material.icons.Icons;
-
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -25,22 +21,7 @@ public class Stop implements DisplayableObject, ListItemData {
     /**
      * The primary "type" of location a {@code Stop} may serve, such as housing or parking
      */
-    public enum StopType {
-        PARKING,
-        HOUSING,
-        LECTURE_HALL,
-        LIBRARY,
-        LANDMARK,
-        DINING,
-        MEDICAL,
-        SPORTS_COMPLEX,
-        RECREATION,
-        NATURE,
-        OTHER,
-        SATELLITE,
-        EXTERNAL,
-        GREEK_LIFE
-    }
+    public enum StopType {UNKNOWN}
 
     // Fields derived from the database at instantiation:
     private long stopId;
@@ -134,8 +115,11 @@ public class Stop implements DisplayableObject, ListItemData {
      *
      * @see #type
      */
-    public static Stop.StopType typeFromString(String typeString) {
-        return StopType.valueOf(typeString);
+    public static StopType typeFromString(String typeString) {
+        switch (typeString) {
+            default:
+                return StopType.UNKNOWN;
+        }
     }
 
     /**
@@ -150,7 +134,10 @@ public class Stop implements DisplayableObject, ListItemData {
      * @see StopType
      */
     public static String stringFromType(StopType stopType) {
-        return stopType.name();
+        switch(stopType) {
+            default:
+                return "Unknown";
+        }
     }
 
     /**

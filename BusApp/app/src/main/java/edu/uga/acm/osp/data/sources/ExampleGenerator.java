@@ -107,7 +107,7 @@ public class ExampleGenerator {
             selection = Math.random();
 
             // If an existing Stop is chosen to be collected, associate it with this Route
-            if (selection <= percentExistingStops && !(this.stopsById.isEmpty() || this.stopsById.size() < 5)) {
+            if (selection <= percentExistingStops && !this.stopsById.isEmpty()) {
                 existingStopIndex = (int) (Math.random() * (stopsById.size() - 1));
                 existingStopId = (long) this.stopsById.keySet().toArray()[existingStopIndex];
                 existingStop = this.stopsById.get(existingStopId);
