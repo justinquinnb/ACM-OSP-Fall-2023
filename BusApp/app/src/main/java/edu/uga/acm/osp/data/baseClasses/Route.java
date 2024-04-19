@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.uga.acm.osp.data.display.DisplayableObject;
 import edu.uga.acm.osp.data.display.ListItemData;
@@ -98,13 +99,6 @@ public class Route implements DisplayableObject, ListItemData {
 
     public long[] getStopIds() {
         return stopIds;
-    }
-
-    /**
-     * Gets the {@code Color} object matching {@code this} {@code Route}'s {@code displayColor}.
-     */
-    public int getDisplayColorObject() {
-        return colorFromString(this.displayColor);
     }
 
     public void setStopIds(long[] stopIds) {
@@ -244,15 +238,41 @@ public class Route implements DisplayableObject, ListItemData {
     }
 
     /**
-     * Retrieves the {@code Color} object from the provided Hexadecimal color {@code String} with
-     * Alpha channel.
+     * Returns the same {@code HashMap} as {@link #getActiveBuses()} but with duplicate buses
+     * eliminated. Each bus will only appear once traveling to the stop they're currently approaching.
      *
-     * @param colorString the hexadecimal, alpha-channel {@code String} to turn into a color object
-     * @return the {@code Color} object matching the provided {@code colorString}
+     * @return a mapping of {@code Stop} IDs to an array of the buses that are currently approaching
+     * them.
      */
-    private static int colorFromString(String colorString) {
-        int colorAsInt = Integer.parseInt(colorString);
-        return colorAsInt;
+    public HashMap<Long, Bus[]> busOverview() {
+        HashMap<Long, Bus[]> newBusOverview = new HashMap<>();
+        ArrayList<Bus> approachingBuses = new ArrayList<>();
+
+        // Iterate through each stop
+        for (Map.Entry<Long, Bus[]> mapping : this.activeBuses.entrySet()) {
+            // Iterate through each bus approaching the stop. If the bus' next stop is the same
+            // as above, add it to approachingBuses
+            for (Bus bus : mapping.getValue()) {
+                if (bus.getNextStopId() == mapping.getKey()) {
+                    approachingBuses.add(bus);
+                }
+            }
+
+            // Add the stop ID and its approachingBuses to the busOverview
+            newBusOverview.put(mapping.getKey(), approachingBuses.toArray(new Bus[0]));
+            approachingBuses.clear();
+        }
+
+        return newBusOverview;
+    }
+
+    /**
+     * Gets {@code this} {@code Route}'s {@code displayColor} field as a {@code Long}.
+     *
+     * @return {@code this} {@code Route}'s {@code displayColor} field as a {@code Long}
+     */
+    public long displayColorAsLong() {
+        return Long.decode(this.displayColor);
     }
 
     // ListItemData Implementations:
