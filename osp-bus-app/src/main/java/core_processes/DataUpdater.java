@@ -1,6 +1,9 @@
 package core_processes;
 
+import base_classes.Route;
+import base_classes.Stop;
 import data_sources.BusData;
+import data_sources.DatabaseService;
 
 import java.util.TimerTask;
 
@@ -15,14 +18,21 @@ public class DataUpdater extends TimerTask {
     @Override
     public void run() {
         BusData.updateBusData();
-        /* System.out.println("ROUTES:---------------------");
+
+        // Validate updates are occurring
+        System.out.println("LATEST SNAPSHOT OF DATA BELOW:");
+        System.out.println("ROUTES:-----------------------");
         Route[] allRoutes = DatabaseService.getAllRoutes();
         for (Route route : allRoutes) {
-            System.out.println(route);
+            System.out.println(route.toString());
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
+
+        System.out.println("STOPS:------------------------");
         Stop[] allStops = DatabaseService.getAllStops();
         for (Stop stop : allStops) {
-            System.out.println(stop);
-        } */
+            System.out.println(stop.toString());
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
     }
 }

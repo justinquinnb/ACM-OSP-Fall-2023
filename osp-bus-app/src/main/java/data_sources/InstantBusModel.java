@@ -29,6 +29,8 @@ public class InstantBusModel extends BusDataSource {
                     )
             );
         }
+
+        this.busDataByRouteId = newOverview;
     }
 
     /**
